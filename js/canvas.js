@@ -15,8 +15,13 @@ class canvas {
         this.context = this.element.getContext('2d')
     }
 
-    fillRect(vector, size, color) {
+    clear() {
+        this.context.clearRect(0, 0, this.size.canvas, this.size.canvas)
+    }
+
+    fillRect(vector, color, translate = 1) {
+        if (translate) for (let i in vector) vector[i] *= this.size.block
         this.context.fillStyle = color
-        this.context.fillRect(vector.x, vector.y, size.w, size.h)
+        this.context.fillRect(vector.x, vector.y, this.size.block, this.size.block)
     }
 }
