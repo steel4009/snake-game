@@ -16,12 +16,15 @@ class canvas {
     }
 
     clear() {
-        this.context.clearRect(0, 0, this.size.canvas, this.size.canvas)
+        this.context.fillStyle = '#bbb'
+        this.context.fillRect(0, 0, this.size.canvas, this.size.canvas)
     }
 
     fillRect(vector, color, translate = 1) {
-        if (translate) for (let i in vector) vector[i] *= this.size.block
+        let v = {}
+        Object.assign(v, vector)
+        if (translate) for (let i in v) v[i] *= this.size.block
         this.context.fillStyle = color
-        this.context.fillRect(vector.x, vector.y, this.size.block, this.size.block)
+        this.context.fillRect(v.x, v.y, this.size.block, this.size.block)
     }
 }

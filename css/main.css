@@ -13,3 +13,6 @@
     background-color: lightsteelblue;
 }
 
+canvas {
+    border: black 1px solid;
+}
