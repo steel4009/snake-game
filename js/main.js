@@ -45,6 +45,7 @@ const board = new canvas(initialData.board)
 let snake, apple, rendering
 const load = () => {
     gameoverDiv.style.top = '-100%'
+    gameoverDiv.style.visibility = 'hidden'
 
     initialData.snake = {
         head: {
@@ -109,6 +110,7 @@ const render = () => {
     if(snake.gameover) {
         clearInterval(rendering)
         gameoverDiv.style.top = '0'
+        gameoverDiv.style.visibility = 'visible'
     }
 }
 
