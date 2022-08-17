@@ -1,4 +1,4 @@
-class fruit {
+export class fruit {
     color;
     position;
     eat;

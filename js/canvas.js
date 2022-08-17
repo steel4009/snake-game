@@ -1,4 +1,4 @@
-class canvas {
+export class canvas {
     element;
     size;
     context;

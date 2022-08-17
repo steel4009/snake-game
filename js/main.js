@@ -1,3 +1,7 @@
+import { character } from "./character.js";
+import { canvas } from "./canvas.js";
+import { fruit } from "./fruit.js";
+
 const initialData = {
     board: {
         size: {

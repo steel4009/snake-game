@@ -1,4 +1,4 @@
-class character {
+export class character {
     head;
     direction;
     trail;
@@ -6,7 +6,8 @@ class character {
     requestedDirection;
     gameover;
     constructor(data) {
-        for (let i in data) this[i] = data[i]
+
+
     }
 
     update(fruit) {
