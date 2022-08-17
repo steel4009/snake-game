@@ -5,26 +5,8 @@ const initialData = {
             block: null
         },
         element: null
-    },
-    character: {
-        head: {
-            x: Math.floor(Math.random() * 20),
-            y: Math.floor(Math.random() * 20)
-        },
-        direction: {
-            x: null,
-            y: null
-        },
-        trail: [],
-        grow: 0
     }
 }
-initialData.character.direction.x = Math.floor(Math.random() * 2) === 0 ? Math.floor(Math.random() * 2) === 0 ? -1 : 1 : 0
-initialData.character.direction.y = initialData.character.direction.x === 0 ? Math.floor(Math.random() * 2) === 0 ? -1 : 1 : 0
-initialData.character.trail.push({
-    x: initialData.character.head.x - initialData.character.direction.x,
-    y: initialData.character.head.y - initialData.character.direction.y
-})
 
 const moves = {
     w: {
@@ -45,25 +27,85 @@ const moves = {
     }
 }
 
+const randomize = (max) => {
+    return {
+        x: Math.floor(Math.random() * max),
+        y: Math.floor(Math.random() * max)
+    }
+}
+
 const mainDiv = document.querySelectorAll('.main')[0]
+const gameoverDiv = document.querySelectorAll('.gameover')[0]
 const board = new canvas(initialData.board)
-const character = new snake(initialData.character)
+
+let snake, apple, rendering
+const load = () => {
+    gameoverDiv.style.top = '-100%'
+
+    initialData.snake = {
+        head: {
+            x: Math.floor(Math.random() * 20),
+                y: Math.floor(Math.random() * 20)
+        },
+        direction: {
+            x: null,
+                y: null
+        },
+        trail: [],
+            grow: 0,
+            gameover: false
+    }
+    initialData.apple = {
+        position: {
+            x: null,
+                y: null
+        },
+        eat: 1,
+            color: 'red'
+    }
+
+    initialData.snake.direction = randomize(2)
+    if (initialData.snake.direction.x === 1) {
+        initialData.snake.direction.x = initialData.snake.direction.y === 0 ? -1 : 1
+        initialData.snake.direction.y = 0
+    } else {
+        initialData.snake.direction.y = initialData.snake.direction.y === 0 ? -1 : 1
+    }
+
+    initialData.snake.trail.push({
+        x: initialData.snake.head.x - initialData.snake.direction.x,
+        y: initialData.snake.head.y - initialData.snake.direction.y
+    })
+
+    snake = new character(initialData.snake)
+    apple = new fruit(initialData.apple)
+
+    rendering = setInterval(render, 400)
+}
 
 mainDiv.appendChild(board.element)
 
 const keyDown = ({key}) => {
-    if(Object.keys(moves).includes(key)) character.requestDirectionChange(moves[key])
+    if(Object.keys(moves).includes(key)) snake.requestDirectionChange(moves[key])
 }
 
 document.addEventListener('keydown', keyDown)
+gameoverDiv.addEventListener('click', load)
 
 const render = () => {
     board.clear()
 
-    character.update()
-    character.draw(board)
+    snake.update(apple)
+    apple.generateRandomPosition(apple.getForbiddenPositions(snake))
+
+    apple.draw(board)
+
+    snake.draw(board)
+
+    if(snake.gameover) {
+        clearInterval(rendering)
+        gameoverDiv.style.top = '0'
+    }
 }
 
-(() => {
-    setInterval(render, 400)
-})()
+load()

@@ -1,15 +1,22 @@
-class snake {
+class character {
     head;
     direction;
     trail;
     grow;
     requestedDirection;
+    gameover;
     constructor(data) {
         for (let i in data) this[i] = data[i]
     }
 
-    update() {
+    update(fruit) {
         this.trail.push({})
+
+        if(fruit.position.x === this.head.x && fruit.position.y === this.head.y) {
+            this.grow = 1
+            fruit.eat = 1
+        }
+
         Object.assign(this.trail[this.trail.length - 1], this.head)
         if (!this.grow) this.trail.shift()
         this.grow = 0
@@ -21,11 +28,15 @@ class snake {
             if (this.head[i] > 19) this.head[i] = 0
             if (this.head[i] < 0) this.head[i] = 19
         }
+
+        for (let i in this.trail) {
+            if (this.trail[i].x === this.head.x && this.trail[i].y === this.head.y) this.gameover = true
+        }
     }
 
     draw(canvas) {
-        canvas.fillRect(this.head, 'green')
         for (let i in this.trail) canvas.fillRect(this.trail[i], '#eee')
+        canvas.fillRect(this.head, 'green')
     }
 
     requestDirectionChange(move) {
