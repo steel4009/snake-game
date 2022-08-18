@@ -1,0 +1,26 @@
+canvas {
+    border: black 1px solid;
+}
+
+.gameover {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.8;
+    visibility: hidden;
+}
+
+.gameover div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 150px;
+}

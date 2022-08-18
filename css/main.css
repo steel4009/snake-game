@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     user-select: none;
+    font-family: Roboto, sans-serif;
+    color: #fff;
+    font-size: 1.5rem;
+    list-style: none;
 }
 
 .main {
@@ -11,32 +17,54 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: lightsteelblue;
+    background-color: #000;
 }
 
-canvas {
-    border: black 1px solid;
+.grid {
+    height: 50%;
+    width: 50%;
+    display: grid;
+    grid-template: 35% 65% / 100%;
 }
 
-.gameover {
-    position: absolute;
-    top: -100%;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    opacity: 0.8;
-    visibility: hidden;
+.grid * {
+    text-align: center;
 }
 
-.gameover div {
-    width: 100%;
-    height: 100%;
+.title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+
+.buttons {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    font-family: sans-serif;
-    text-align: center;
-    font-size: 150px;
+}
+
+.buttons ul {
+    display: grid;
+    grid-template: 40% 55% / 100%;
+    height: 100%;
+    width: 80%;
+}
+
+.buttons ul li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #ffffff;
+    background-color: #222;
+    transition: all 200ms ease-out;
+}
+
+.buttons ul li:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+.buttons ul li:active {
+    transform: scale(.95);
 }
