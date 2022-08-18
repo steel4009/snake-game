@@ -5,5 +5,8 @@ let currentDifficult = 0;
 
 const changeDifficult = () => {
     currentDifficult++;
-    if (currentDifficult >= 0) currentDifficult;
+    if (currentDifficult >= 3) currentDifficult = 0;
+    difficultSpan.innerText = options[currentDifficult]
 }
+
+difficultButton.addEventListener('click', changeDifficult)
