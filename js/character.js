@@ -9,7 +9,8 @@ export class character {
         for (let i in data) this[i] = data[i]
     }
 
-    update(fruit) {
+    update(fruit, canvas) {
+        let size = (canvas.size.canvas / canvas.size.block) - 1
         this.trail.push({})
 
         if(fruit.position.x === this.head.x && fruit.position.y === this.head.y) {
@@ -25,8 +26,8 @@ export class character {
         this.requestedDirection = null
         for (let i in this.direction) this.head[i] += this.direction[i]
         for (let i in this.head) {
-            if (this.head[i] > 19) this.head[i] = 0
-            if (this.head[i] < 0) this.head[i] = 19
+            if (this.head[i] > size) this.head[i] = 0
+            if (this.head[i] < 0) this.head[i] = size
         }
 
         for (let i in this.trail) {

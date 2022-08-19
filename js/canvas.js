@@ -1,3 +1,5 @@
+import { difficult } from "./game.js";
+
 export class canvas {
     element;
     size;
@@ -9,7 +11,7 @@ export class canvas {
     }
 
     setProperties() {
-        this.size.block = this.size.canvas / 20
+        this.size.block = this.size.canvas / Math.floor(20 + 10 * difficult)
         this.element = document.createElement('canvas')
         this.element.width = this.element.height = this.size.canvas
         this.context = this.element.getContext('2d')

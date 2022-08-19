@@ -2,6 +2,8 @@ import { character } from "./character.js";
 import { canvas } from "./canvas.js";
 import { fruit } from "./fruit.js";
 
+export let difficult = parseInt(new URLSearchParams(window.location.search).get('difficult'))
+
 const initialData = {
     board: {
         size: {
@@ -42,17 +44,16 @@ const mainDiv = document.querySelectorAll('.main')[0]
 const gameoverDiv = document.querySelectorAll('.gameover')[0]
 const board = new canvas(initialData.board)
 
-let snake, apple, rendering, difficult
+let snake, apple, rendering
 const load = () => {
-    difficult = new URLSearchParams(window.location.search).get('difficult')
 
     gameoverDiv.style.top = '-100%'
     gameoverDiv.style.visibility = 'hidden'
 
     initialData.snake = {
         head: {
-            x: Math.floor(Math.random() * 20),
-                y: Math.floor(Math.random() * 20)
+            x: Math.floor(Math.random() * (20 + 10 * difficult)),
+                y: Math.floor(Math.random() * (20 + 10 * difficult))
         },
         direction: {
             x: null,
@@ -87,7 +88,7 @@ const load = () => {
     snake = new character(initialData.snake)
     apple = new fruit(initialData.apple)
 
-    rendering = setInterval(render, 400)
+    rendering = setInterval(render, 400 - (difficult * 50))
 }
 
 mainDiv.appendChild(board.element)
@@ -102,8 +103,8 @@ gameoverDiv.addEventListener('click', load)
 const render = () => {
     board.clear()
 
-    snake.update(apple)
-    apple.generateRandomPosition(apple.getForbiddenPositions(snake))
+    snake.update(apple, board)
+    apple.generateRandomPosition(apple.getForbiddenPositions(snake), board)
 
     apple.draw(board)
 
