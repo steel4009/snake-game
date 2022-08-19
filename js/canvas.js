@@ -16,7 +16,7 @@ export class canvas {
     }
 
     clear() {
-        this.context.fillStyle = '#bbb'
+        this.context.fillStyle = 'black'
         this.context.fillRect(0, 0, this.size.canvas, this.size.canvas)
     }
 

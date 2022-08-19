@@ -42,8 +42,10 @@ const mainDiv = document.querySelectorAll('.main')[0]
 const gameoverDiv = document.querySelectorAll('.gameover')[0]
 const board = new canvas(initialData.board)
 
-let snake, apple, rendering
+let snake, apple, rendering, difficult
 const load = () => {
+    difficult = new URLSearchParams(window.location.search).get('difficult')
+
     gameoverDiv.style.top = '-100%'
     gameoverDiv.style.visibility = 'hidden'
 

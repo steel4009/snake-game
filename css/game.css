@@ -1,5 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    user-select: none;
+    font-family: Roboto, sans-serif;
+    color: #fff;
+    font-size: 1.5rem;
+    list-style: none;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+}
+
 canvas {
-    border: black 1px solid;
+    border: white 3px solid;
 }
 
 .gameover {
