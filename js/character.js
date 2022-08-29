@@ -3,6 +3,7 @@ export class character {
     direction;
     trail;
     grow;
+    score;
     requestedDirection;
     gameover;
     constructor(data) {
@@ -15,6 +16,7 @@ export class character {
 
         if(fruit.position.x === this.head.x && fruit.position.y === this.head.y) {
             this.grow = 1
+            this.score++
             fruit.eat = 1
         }
 

@@ -2,7 +2,14 @@ import { character } from "./character.js";
 import { canvas } from "./canvas.js";
 import { fruit } from "./fruit.js";
 
-export let difficult = parseInt(new URLSearchParams(window.location.search).get('difficult'))
+function getDifficult() {
+    let d = parseInt(new URLSearchParams(window.location.search).get('difficult'))
+    if(d > 2) d = 3
+    else if(d < 0) d = 0
+    return d
+}
+
+export let difficult = getDifficult()
 
 const initialData = {
     board: {
@@ -43,8 +50,12 @@ const randomize = (max) => {
 const mainDiv = document.querySelectorAll('.main')[0]
 const gameoverDiv = document.querySelectorAll('.gameover')[0]
 const board = new canvas(initialData.board)
+const score = document.querySelector('.score')
+const time = document.querySelector('.time')
+const timer = {}
+document.querySelector('.info').style.width = board.size.canvas + 'px'
 
-let snake, apple, rendering
+let snake, apple, rendering, t
 const load = () => {
 
     gameoverDiv.style.top = '-100%'
@@ -60,8 +71,9 @@ const load = () => {
                 y: null
         },
         trail: [],
-            grow: 0,
-            gameover: false
+        grow: 0,
+        gameover: false,
+        score: 0
     }
     initialData.apple = {
         position: {
@@ -89,6 +101,7 @@ const load = () => {
     apple = new fruit(initialData.apple)
 
     rendering = setInterval(render, 400 - (difficult * 50))
+    startTimer()
 }
 
 mainDiv.appendChild(board.element)
@@ -110,11 +123,48 @@ const render = () => {
 
     snake.draw(board)
 
+    score.innerText = snake.score
+
     if(snake.gameover) {
         clearInterval(rendering)
+        stopTimer()
         gameoverDiv.style.top = '0'
         gameoverDiv.style.visibility = 'visible'
     }
+}
+
+const doTimer = () => {
+    let display = {
+        s: () => {
+            let r
+            if(timer.s < 10) r = `0${timer.s}`
+            else r = timer.s
+            return r
+        },
+        m: () => {
+            let r
+            if(timer.m < 10) r = `0${timer.m}`
+            else r = timer.m
+            return r
+        }
+    }
+    time.innerText = `${display.m()}:${display.s()}`
+    timer.s++
+    if(timer.s >= 60) {
+        timer.s = 0
+        timer.m++
+    }
+}
+
+const startTimer = () => {
+    timer.s = 0
+    timer.m = 0
+    doTimer()
+    t = setInterval(doTimer, 1000)
+}
+
+const stopTimer = () => {
+    clearInterval(t)
 }
 
 load()
