@@ -1,6 +1,6 @@
 import { character } from "./character.js";
 import { canvas } from "./canvas.js";
-import { fruit } from "./fruit.js";
+import { item } from "./item.js";
 
 function getDifficult() {
     let d = parseInt(new URLSearchParams(window.location.search).get('difficult'))
@@ -55,7 +55,7 @@ const time = document.querySelector('.time')
 const timer = {}
 document.querySelector('.info').style.width = board.size.canvas + 'px'
 
-let snake, apple, rendering, t
+let snake, apple, rendering, t, frame = 0, tick, boost
 const load = () => {
 
     gameoverDiv.style.top = '-100%'
@@ -78,10 +78,28 @@ const load = () => {
     initialData.apple = {
         position: {
             x: null,
-                y: null
+            y: null
         },
         eat: 1,
-            color: 'red'
+        color: 'red',
+        type: 'fruit'
+    }
+    initialData.boost = {
+        position: {
+            x: null,
+            y: null
+        },
+        color: 'yellow',
+        type: 'boost',
+        active: {
+            bool: false,
+            time: 50,
+            when: null,
+            reset: function() {
+                boost.active.bool = false
+                boost.active.when = null
+            }
+        }
     }
 
     initialData.snake.direction = randomize(2)
@@ -98,9 +116,11 @@ const load = () => {
     })
 
     snake = new character(initialData.snake)
-    apple = new fruit(initialData.apple)
+    apple = new item(initialData.apple)
+    boost = new item(initialData.boost)
 
-    rendering = setInterval(render, 400 - (difficult * 50))
+    tick = 4 - difficult
+    rendering = setInterval(render, 100)
     startTimer()
 }
 
@@ -114,22 +134,31 @@ document.addEventListener('keydown', keyDown)
 gameoverDiv.addEventListener('click', load)
 
 const render = () => {
-    board.clear()
+    frame++
+    if(frame % (boost.active.bool ? tick - 1 : tick) === 0) {
+        board.clear()
 
-    snake.update(apple, board)
-    apple.generateRandomPosition(apple.getForbiddenPositions(snake), board)
+        if(frame > boost.active.when + boost.active.time) {
+            boost.active.reset()
+        }
+        snake.update([apple, boost], frame, board)
+        apple.generateRandomPosition(apple.getForbiddenPositions(snake, boost), board)
+        console.log(boost)
+        if(!boost.active.bool && Math.floor(Math.random() * 10) <= 2 && boost.position.x === null && boost.position.y === null) boost.generateRandomPosition(boost.getForbiddenPositions(snake, apple), board)
+        else if(boost.active.bool) boost.clear()
 
-    apple.draw(board)
+        apple.draw(board)
+        boost.draw(board)
+        snake.draw(board)
 
-    snake.draw(board)
+        score.innerText = snake.score
 
-    score.innerText = snake.score
-
-    if(snake.gameover) {
-        clearInterval(rendering)
-        stopTimer()
-        gameoverDiv.style.top = '0'
-        gameoverDiv.style.visibility = 'visible'
+        if (snake.gameover) {
+            clearInterval(rendering)
+            stopTimer()
+            gameoverDiv.style.top = '0'
+            gameoverDiv.style.visibility = 'visible'
+        }
     }
 }
 

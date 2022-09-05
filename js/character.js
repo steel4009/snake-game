@@ -10,14 +10,21 @@ export class character {
         for (let i in data) this[i] = data[i]
     }
 
-    update(fruit, canvas) {
+    update(items, currentFrame, canvas) {
         let size = (canvas.size.canvas / canvas.size.block) - 1
         this.trail.push({})
 
-        if(fruit.position.x === this.head.x && fruit.position.y === this.head.y) {
-            this.grow = 1
-            this.score++
-            fruit.eat = 1
+        for (let i in items ){
+            if (items[i].position.x === this.head.x && items[i].position.y === this.head.y) {
+                if (items[i].type === 'fruit'){
+                    this.grow = 1
+                    this.score++
+                } else if (items[i].type === 'boost') {
+                    items[i].active.bool = true
+                    items[i].active.when = currentFrame
+                }
+                items[i].eat = 1
+            }
         }
 
         Object.assign(this.trail[this.trail.length - 1], this.head)

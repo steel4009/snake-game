@@ -1,4 +1,5 @@
-export class fruit {
+export class item {
+    type;
     color;
     position;
     eat;
@@ -6,7 +7,7 @@ export class fruit {
         for (let i in data) this[i] = data[i]
     }
 
-    getForbiddenPositions(character) {
+    getForbiddenPositions(character, items) {
         let f = []
         f.push({})
         Object.assign(f[0], character.head)
@@ -14,11 +15,12 @@ export class fruit {
             f.push([])
             Object.assign(f[f.length - 1], character.trail[i])
         }
+        Object.assign(f[f.length - 1], items.position)
         return f
     }
 
     generateRandomPosition(forbiddenPositions, canvas) {
-        if(!this.eat) return
+        if(!this.eat && this.type === 'fruit') return
 
         let size = (canvas.size.canvas / canvas.size.block) - 1
 
@@ -36,7 +38,15 @@ export class fruit {
         } while (bool)
     }
 
+    clear() {
+        this.position = {
+            x: null,
+            y: null
+        }
+    }
+
     draw(canvas) {
+        if(this.position.x === null && this.position.y === null) return
         canvas.fillRect(this.position, this.color)
     }
 }
