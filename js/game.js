@@ -144,7 +144,7 @@ const render = () => {
         snake.update([apple, boost], frame, board)
         apple.generateRandomPosition(apple.getForbiddenPositions(snake, boost), board)
         console.log(boost)
-        if(!boost.active.bool && Math.floor(Math.random() * 10) <= 2 && boost.position.x === null && boost.position.y === null) boost.generateRandomPosition(boost.getForbiddenPositions(snake, apple), board)
+        if(!boost.active.bool && Math.floor(Math.random() * 500) <= 0 && boost.position.x === null && boost.position.y === null) boost.generateRandomPosition(boost.getForbiddenPositions(snake, apple), board)
         else if(boost.active.bool) boost.clear()
 
         apple.draw(board)
